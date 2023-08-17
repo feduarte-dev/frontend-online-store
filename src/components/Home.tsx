@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
 import { Link } from 'react-router-dom';
+import { getProductsFromCategoryAndQuery } from '../services/api';
 
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
