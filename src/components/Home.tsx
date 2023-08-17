@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import Aside from './Aside';
@@ -15,6 +15,9 @@ function Home() {
     const GETAPI = await getProductsFromCategoryAndQuery(inputValue, inputValue);
     setProducts(GETAPI.results);
   }
+  const handleCategoryClick = useCallback((filteredData: any) => {
+    setProducts(filteredData);
+  }, []);
 
   return (
     <>
@@ -56,7 +59,7 @@ function Home() {
       {products.length === 0 && (
         <h2>Nenhum produto foi encontrado</h2>
       )}
-      <Aside />
+      <Aside onCategoryClick={ handleCategoryClick } />
     </>
   );
 }
