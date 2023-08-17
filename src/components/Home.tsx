@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
@@ -25,6 +26,12 @@ function Home() {
         />
       </label>
       <button data-testid="query-button" onClick={ handleButton }>Pesquisar</button>
+      <div>
+        <Link to="/carrinho" data-testid="shopping-cart-button">
+          <button>Carrinho</button>
+        </Link>
+      </div>
+
       <h1 data-testid="home-initial-message">
         Digite algum termo de pesquisa ou escolha uma categoria.
       </h1>
