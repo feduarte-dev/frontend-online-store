@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
+import Aside from './Aside';
 
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
@@ -11,7 +12,8 @@ function Home() {
   }
 
   async function handleButton() {
-    setProducts(await getProductsFromCategoryAndQuery(inputValue, inputValue));
+    const GETAPI = await getProductsFromCategoryAndQuery(inputValue, inputValue);
+    setProducts(GETAPI.results);
   }
 
   return (
@@ -54,6 +56,7 @@ function Home() {
       {products.length === 0 && (
         <h2>Nenhum produto foi encontrado</h2>
       )}
+      <Aside />
     </>
   );
 }
