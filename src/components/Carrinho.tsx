@@ -9,7 +9,7 @@ function Carrinho() {
       {carrinhoVazio ? (
         <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
       ) : (
-        <p>Carrinho com produtos</p>
+        <p>Carrinho com produtos, BRELEN</p>
       )}
     </div>
   );
