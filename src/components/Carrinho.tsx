@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function Carrinho() {
-  const [carrinhoProdutos, setCarrinhoProdutos] = useState([]);
+  const [carrinhoProdutos] = useState([]);
   const carrinhoVazio = carrinhoProdutos.length === 0;
 
   return (
