@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import Cart from '../Cart';
+import { saveItem } from '../../services/cart';
 
 interface Product {
   title: string,
@@ -38,13 +40,19 @@ function ProductDetails() {
           <Link
             to="/cart"
           >
-            <button data-testid="shopping-cart-button">Adicionar ao carrinho</button>
+            <button data-testid="shopping-cart-button">Carrinho</button>
           </Link>
           <p>{ product.description }</p>
         </>
       ) : (
         <p>Carregando...</p>
       )}
+      <button
+        data-testid="product-detail-add-to-cart"
+        onClick={ () => saveItem(product) }
+      >
+        Adicionar ao Carrinho
+      </button>
     </div>
   );
 }
