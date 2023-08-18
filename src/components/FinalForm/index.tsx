@@ -23,10 +23,9 @@ const initialState = {
 function FinalForm() {
   const [form, setForm] = useState<FormType>(initialState);
   const [submit, setSubmit] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('Campos inválidos');
 
   const navigate = useNavigate();
-  console.log(readCartList());
 
   const handleForm = ({ target: { name, value } }:any) => {
     const formInput = {
@@ -37,15 +36,21 @@ function FinalForm() {
   };
 
   const handleClick = () => {
-    setSubmit(true);
-    if (form.name.length === 0 || form.email.length === 0) {
-      if (form.cpf.length === 0 || form.telefone.length === 0) {
-        if (form.cep.length === 0 || form.endereço.length === 0) {
-          setMessage('Campos inválidos');
-        }
-      }
+    if (
+      !form.name
+      || !form.email
+      || !form.cpf
+      || !form.telefone
+      || !form.cep
+      || !form.endereço
+    ) {
+      // setMessage('Campos inválidos');
+      setSubmit(true);
+    } else {
+      setMessage('');
+      navigate('/');
+      localStorage.setItem('cartList', JSON.stringify([]));
     }
-    navigate('/');
   };
 
   return (
