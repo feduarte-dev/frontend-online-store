@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCategories, getProductById } from '../services/api';
+import { getCategories, getProductById } from '../../services/api';
 
 type Category = {
   id: number,
