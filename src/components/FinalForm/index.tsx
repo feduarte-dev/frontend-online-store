@@ -24,6 +24,7 @@ function FinalForm() {
   const [form, setForm] = useState<FormType>(initialState);
   const [submit, setSubmit] = useState(false);
   const [message, setMessage] = useState('Campos inválidos');
+  const [selectedPayment, setSelectedPayment] = useState('');
 
   const navigate = useNavigate();
 
@@ -43,6 +44,7 @@ function FinalForm() {
       || !form.telefone
       || !form.cep
       || !form.endereço
+      || selectedPayment === ''
     ) {
       // setMessage('Campos inválidos');
       setSubmit(true);
@@ -120,22 +122,25 @@ function FinalForm() {
           type="radio"
           name="Boleto"
           data-testid="ticket-payment"
-          onChange={ handleForm }
+          onChange={ (event) => setSelectedPayment(event.target.value) }
         />
         <input
           type="radio"
           name="Visa"
           data-testid="visa-payment"
+          onChange={ (event) => setSelectedPayment(event.target.value) }
         />
         <input
           type="radio"
           name="Master Card"
           data-testid="master-payment"
+          onChange={ (event) => setSelectedPayment(event.target.value) }
         />
         <input
           type="radio"
           name="Elo"
           data-testid="elo-payment"
+          onChange={ (event) => setSelectedPayment(event.target.value) }
         />
         Método de pagamento:
       </label>
