@@ -1,11 +1,16 @@
 import { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import Aside from './Aside';
 
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
   const [products, setProducts] = useState<[]>([]);
+  const navigate = useNavigate();
+
+  function handleProductClick(productId: string) {
+    navigate(`/produto/${productId}`);
+  }
 
   function handleInput(e:React.ChangeEvent<HTMLInputElement>):void {
     setInputValue(e.target.value);
@@ -45,12 +50,26 @@ function Home() {
           {products.map((product:
           { id:string, title: string, thumbnail: string, price: string }) => (
             <div
+              role="button"
+              tabIndex={ 0 }
               key={ product.id }
               data-testid="product"
+              onClick={ () => handleProductClick(product.id) }
+              onKeyDown={ (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleCategoryClick(product.id);
+                }
+              } }
             >
               <p>{product.title}</p>
               <img src={ product.thumbnail } alt="productImage" />
               <p>{product.price}</p>
+              <Link
+                to={ `/produto${product.id}` }
+                data-testid="product-detail-link"
+              >
+                Detalhes do Produto
+              </Link>
             </div>
 
           ))}
