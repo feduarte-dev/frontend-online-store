@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { removeItem, increaseItem, decreaseItem } from '../../services/cart';
 import { CartType } from '../../types/cart';
+import { useNavigate } from 'react-router-dom';
+
 
 function Cart() {
   const [cartList, setCartList] = useState([]);
+
+  const navigate = useNavigate();
 
   const getCart = () => JSON.parse(
     localStorage.getItem('cartList') as string,
@@ -16,6 +20,7 @@ function Cart() {
     }
     fetchCart();
   }, []);
+
 
   const handleDeleteBtn = (product: CartType) => {
     removeItem(product);
@@ -31,6 +36,11 @@ function Cart() {
     decreaseItem(product);
     setCartList(getCart());
   };
+
+  function handleFinalFormClick() {
+    navigate('/checkout');
+  }
+
 
   return (
     <div>
@@ -71,6 +81,12 @@ function Cart() {
       {cartList.length === 0 && (
         <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
       )}
+      <button
+        data-testid="checkout-products"
+        onClick={ handleFinalFormClick }
+      >
+        Finalizar a compra
+      </button>
     </div>
   );
 }
