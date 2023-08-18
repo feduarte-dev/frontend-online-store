@@ -19,7 +19,7 @@ function ProductDetails() {
         const data = await response.json();
         setProduct(data);
       } catch (error) {
-        console.error('Deu erro ai doido', error);
+        console.error('Deu erro ai dosido', error);
       }
     }
     fetchProductDetails();
@@ -36,7 +36,7 @@ function ProductDetails() {
           />
           <p data-testid="product-detail-price">{ `Preço: ${product.price}` }</p>
           <Link
-            to="/carrinho"
+            to="/cart"
           >
             <button data-testid="shopping-cart-button">Adicionar ao carrinho</button>
           </Link>
