@@ -1,7 +1,7 @@
 if (!JSON.parse(localStorage.getItem('cartList') as string)) {
   localStorage.setItem('cartList', JSON.stringify([]));
 }
-const readCartList = (): any[] => JSON.parse(
+export const readCartList = (): any[] => JSON.parse(
   localStorage.getItem('cartList') as string,
 );
 

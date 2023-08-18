@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
   const [carrinhoProdutos, setCarrinhoProdutos] = useState([]);
+
+  const navigate = useNavigate();
 
   const getCart = () => JSON.parse(
     localStorage.getItem('cartList') as string,
@@ -14,6 +17,10 @@ function Cart() {
     }
     carrinhoLista();
   }, []);
+
+  function handleFinalFormClick() {
+    navigate('/checkout');
+  }
 
   return (
     <div>
@@ -37,6 +44,12 @@ function Cart() {
       {carrinhoProdutos.length === 0 && (
         <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
       )}
+      <button
+        data-testid="checkout-products"
+        onClick={ handleFinalFormClick }
+      >
+        Finalizar a compra
+      </button>
     </div>
 
   );
