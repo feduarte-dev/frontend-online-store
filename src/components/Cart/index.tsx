@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { removeItem, increaseItem, decreaseItem } from '../../services/cart';
 import { CartType } from '../../types/cart';
-import { useNavigate } from 'react-router-dom';
-
 
 function Cart() {
   const [cartList, setCartList] = useState([]);
@@ -20,7 +19,6 @@ function Cart() {
     }
     fetchCart();
   }, []);
-
 
   const handleDeleteBtn = (product: CartType) => {
     removeItem(product);
@@ -40,7 +38,6 @@ function Cart() {
   function handleFinalFormClick() {
     navigate('/checkout');
   }
-
 
   return (
     <div>

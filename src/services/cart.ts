@@ -10,7 +10,7 @@ export const readCartList = (): any[] => JSON.parse(
 const saveCartList = (cartProduct: CartType[]) => localStorage
   .setItem('cartList', JSON.stringify(cartProduct));
 
-export function saveItem({ id, price, thumbnail, title, quantity }: any) {
+export function saveItem({ id, price, thumbnail, title }: any) {
   const cartProduct = {
     id,
     price,
