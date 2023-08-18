@@ -1,31 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Cart from '../Cart';
 import { saveItem } from '../../services/cart';
-
-interface Product {
-  title: string,
-  thumbnail: string,
-  price: number,
-  description: string,
-}
+import { CartType } from '../../types/cart';
+import { getProductDetailsById } from '../../services/api';
 
 function ProductDetails() {
+  const [product, setProduct] = useState<CartType >(null);
   const { productId } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    async function fetchProductDetails() {
-      try {
-        const response = await fetch(`https://api.mercadolibre.com/items/${productId}`);
-        const data = await response.json();
-        setProduct(data);
-      } catch (error) {
-        console.error('Deu erro ai dosido', error);
-      }
-    }
-    fetchProductDetails();
+    const GETAPI = async () => {
+      const response = await getProductDetailsById(productId);
+      setProduct(response);
+    };
+    GETAPI();
   }, [productId]);
+
   return (
     <div>
       { product ? (

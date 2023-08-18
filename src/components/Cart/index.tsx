@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { removeItem, increaseItem, decreaseItem } from '../../services/cart';
+import { CartType } from '../../types/cart';
 
 function Cart() {
-  const [carrinhoProdutos, setCarrinhoProdutos] = useState([]);
+  const [cartList, setCartList] = useState([]);
 
   const navigate = useNavigate();
 
@@ -11,12 +13,27 @@ function Cart() {
   );
 
   useEffect(() => {
-    function carrinhoLista() {
-      const allFavorites = getCart();
-      setCarrinhoProdutos(allFavorites);
+    function fetchCart() {
+      const fetchCartList = getCart();
+      setCartList(fetchCartList);
     }
-    carrinhoLista();
+    fetchCart();
   }, []);
+
+  const handleDeleteBtn = (product: CartType) => {
+    removeItem(product);
+    setCartList(getCart());
+  };
+
+  const handleIncreaseBtn = (product: CartType) => {
+    increaseItem(product);
+    setCartList(getCart());
+  };
+
+  const handleDecreaseBtn = (product: CartType) => {
+    decreaseItem(product);
+    setCartList(getCart());
+  };
 
   function handleFinalFormClick() {
     navigate('/checkout');
@@ -24,24 +41,41 @@ function Cart() {
 
   return (
     <div>
-      {carrinhoProdutos.length > 0 && (
+      {cartList.length > 0 && (
         <div>
-          {carrinhoProdutos.map((product:
-          { id:string, title: string, thumbnail: string, price: string }) => (
+          {cartList.map((product:{ id:string, title
+          : string, thumbnail: string, price: string, quantity: number }) => (
             <>
               <p data-testid="shopping-cart-product-name">{product.title}</p>
+              <button
+                data-testid="remove-product"
+                onClick={ () => handleDeleteBtn(product) }
+              >
+                x
+              </button>
               <img src={ product.thumbnail } alt="productImage" />
               <p>{product.price}</p>
+              <div>
+                <button
+                  data-testid="product-decrease-quantity"
+                  onClick={ () => handleDecreaseBtn(product) }
+                >
+                  -
+                </button>
+                <p data-testid="shopping-cart-product-quantity">{product.quantity}</p>
+                <button
+                  data-testid="product-increase-quantity"
+                  onClick={ () => handleIncreaseBtn(product) }
+                >
+                  +
+                </button>
+              </div>
             </>
           ))}
-          <p data-testid="shopping-cart-product-quantity">
-            Quantidade:
-            {' '}
-            {carrinhoProdutos.length}
-          </p>
+          <p>{`Quantidade: ${cartList.length}`}</p>
         </div>
       )}
-      {carrinhoProdutos.length === 0 && (
+      {cartList.length === 0 && (
         <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
       )}
       <button
@@ -51,7 +85,6 @@ function Cart() {
         Finalizar a compra
       </button>
     </div>
-
   );
 }
 
