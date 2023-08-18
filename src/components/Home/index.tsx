@@ -7,9 +7,10 @@ import { saveItem } from '../../services/cart';
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
   const [products, setProducts] = useState<[]>([]);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  function handleProductClick(productId: string) {
+  function handleProductNav(productId: string) {
     navigate(`/product/${productId}`);
   }
 
@@ -17,12 +18,14 @@ function Home() {
     setInputValue(e.target.value);
   }
 
-  async function handleSearchClick() {
+  async function handleSearchBtn() {
+    setIsClicked(true);
     const GETAPI = await getProductsFromCategoryAndQuery(inputValue, inputValue);
     setProducts(GETAPI.results);
   }
 
   const handleCategoryClick = useCallback((filteredData: any) => {
+    setIsClicked(true);
     setProducts(filteredData);
   }, []);
 
@@ -37,13 +40,13 @@ function Home() {
           onChange={ handleInput }
         />
       </label>
-      <button data-testid="query-button" onClick={ handleSearchClick }>Pesquisar</button>
+      <button data-testid="query-button" onClick={ handleSearchBtn }>Pesquisar</button>
       <div>
         <Link to="/cart" data-testid="shopping-cart-button">
           <button>Carrinho</button>
         </Link>
       </div>
-
+      <Aside onCategoryClick={ handleCategoryClick } />
       <h1 data-testid="home-initial-message">
         Digite algum termo de pesquisa ou escolha uma categoria.
       </h1>
@@ -57,7 +60,7 @@ function Home() {
                 tabIndex={ 0 }
                 key={ product.id }
                 data-testid="product"
-                onClick={ () => handleProductClick(product.id) }
+                onClick={ () => handleProductNav(product.id) }
                 onKeyDown={ (e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     handleCategoryClick(product.id);
@@ -84,10 +87,10 @@ function Home() {
           ))}
         </div>
       )}
-      {products.length === 0 && (
+      {products.length === 0 && isClicked && (
         <h2>Nenhum produto foi encontrado</h2>
       )}
-      <Aside onCategoryClick={ handleCategoryClick } />
+
     </>
   );
 }
