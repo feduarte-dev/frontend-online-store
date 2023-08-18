@@ -1,15 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { readCartList } from '../../services/cart';
-
-type FormType = {
-  name: string,
-  email: string,
-  cpf: string,
-  telefone: string,
-  cep: string,
-  endereço: string
-};
+import { FormType } from '../../types/checkout';
 
 const initialState = {
   name: '',
@@ -20,12 +12,10 @@ const initialState = {
   endereço: '',
 };
 
-function FinalForm() {
+function Checkout() {
   const [form, setForm] = useState<FormType>(initialState);
-  const [submit, setSubmit] = useState(false);
-  const [message, setMessage] = useState('Campos inválidos');
-  const [selectedPayment, setSelectedPayment] = useState('');
-
+  const [verified, setIsVerified] = useState<boolean>(false);
+  const [selectedPayment, setSelectedPayment] = useState<string>('');
   const navigate = useNavigate();
 
   const handleForm = ({ target: { name, value } }:any) => {
@@ -46,18 +36,17 @@ function FinalForm() {
       || !form.endereço
       || selectedPayment === ''
     ) {
-      // setMessage('Campos inválidos');
-      setSubmit(true);
+      setIsVerified(true);
     } else {
-      setMessage('');
       navigate('/');
       localStorage.setItem('cartList', JSON.stringify([]));
     }
   };
 
   return (
-    <div>
+    <form>
       <label>
+        Nome completo:
         <input
           data-testid="checkout-fullname"
           onChange={ handleForm }
@@ -65,10 +54,9 @@ function FinalForm() {
           value={ form.name }
           required
         />
-
-        Nome completo:
       </label>
       <label>
+        E-mail:
         <input
           data-testid="checkout-email"
           onChange={ handleForm }
@@ -76,9 +64,9 @@ function FinalForm() {
           value={ form.email }
           required
         />
-        E-mail:
       </label>
       <label>
+        CPF
         <input
           data-testid="checkout-cpf"
           onChange={ handleForm }
@@ -86,9 +74,9 @@ function FinalForm() {
           value={ form.cpf }
           required
         />
-        CPF
       </label>
       <label>
+        Telefone:
         <input
           data-testid="checkout-phone"
           onChange={ handleForm }
@@ -96,18 +84,19 @@ function FinalForm() {
           value={ form.telefone }
           required
         />
-        Telefone:
       </label>
       <label>
+        CEP:
         <input
           data-testid="checkout-cep"
           onChange={ handleForm }
           name="cep"
+          value={ form.cep }
           required
         />
-        CEP:
       </label>
       <label>
+        Endereço:
         <input
           data-testid="checkout-address"
           onChange={ handleForm }
@@ -115,47 +104,62 @@ function FinalForm() {
           value={ form.endereço }
           required
         />
-        Endereço:
       </label>
-      <label>
-        <input
-          type="radio"
-          name="Boleto"
-          data-testid="ticket-payment"
-          onChange={ (event) => setSelectedPayment(event.target.value) }
-        />
-        <input
-          type="radio"
-          name="Visa"
-          data-testid="visa-payment"
-          onChange={ (event) => setSelectedPayment(event.target.value) }
-        />
-        <input
-          type="radio"
-          name="Master Card"
-          data-testid="master-payment"
-          onChange={ (event) => setSelectedPayment(event.target.value) }
-        />
-        <input
-          type="radio"
-          name="Elo"
-          data-testid="elo-payment"
-          onChange={ (event) => setSelectedPayment(event.target.value) }
-        />
-        Método de pagamento:
-      </label>
+      <div>
+        <p>Método de pagamento:</p>
+
+        <label>
+          Boleto
+          <input
+            type="radio"
+            name="payment"
+            data-testid="ticket-payment"
+            onChange={ (event) => setSelectedPayment(event.target.value) }
+          />
+        </label>
+        <label>
+          Visa
+          <input
+            type="radio"
+            name="payment"
+            data-testid="visa-payment"
+            onChange={ (event) => setSelectedPayment(event.target.value) }
+          />
+        </label>
+        <label>
+          Master
+          <input
+            type="radio"
+            name="payment"
+            data-testid="master-payment"
+            onChange={ (event) => setSelectedPayment(event.target.value) }
+          />
+        </label>
+        <label>
+          Elo
+          <input
+            type="radio"
+            name="payment"
+            data-testid="elo-payment"
+            onChange={ (event) => setSelectedPayment(event.target.value) }
+          />
+        </label>
+      </div>
       <button
         data-testid="checkout-btn"
         onClick={ handleClick }
       >
-        Enviar formulário
+        Finalizar Compra
       </button>
-      {submit && <p data-testid="error-msg">{message}</p>}
+      {verified && <p data-testid="error-msg">Campos inválidos</p>}
       {readCartList().map((product) => (
-        <p key={ product.id }>{ product.title }</p>
+        <div key={ product.id }>
+          <p>{ product.title }</p>
+        </div>
       ))}
-    </div>
+
+    </form>
   );
 }
 
-export default FinalForm;
+export default Checkout;

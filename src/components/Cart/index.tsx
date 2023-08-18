@@ -35,7 +35,7 @@ function Cart() {
     setCartList(getCart());
   };
 
-  function handleFinalFormClick() {
+  function handleCheckout() {
     navigate('/checkout');
   }
 
@@ -80,7 +80,7 @@ function Cart() {
       )}
       <button
         data-testid="checkout-products"
-        onClick={ handleFinalFormClick }
+        onClick={ handleCheckout }
       >
         Finalizar a compra
       </button>
