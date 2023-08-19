@@ -2,12 +2,13 @@ import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../../services/api';
 import Aside from '../Aside';
-import { saveItem } from '../../services/cart';
+import { saveItem, readCartList } from '../../services/cart';
 
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
   const [products, setProducts] = useState<[]>([]);
   const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [countCart, setCountCart] = useState<number>(readCartList().length);
   const navigate = useNavigate();
 
   function navigateToProduct(productId: string) {
@@ -29,6 +30,10 @@ function Home() {
     setProducts(filteredData);
   }, []);
 
+  const atualizaCountCart = () => {
+    setCountCart(readCartList().length);
+  };
+
   return (
     <>
       <label htmlFor="searchInput">
@@ -45,6 +50,7 @@ function Home() {
         <Link to="/cart" data-testid="shopping-cart-button">
           <button>Carrinho</button>
         </Link>
+        <h4 data-testid="shopping-cart-size">{countCart}</h4>
       </div>
       <Aside onCategoryClick={ handleCategoryClick } />
       <h1 data-testid="home-initial-message">
@@ -79,7 +85,10 @@ function Home() {
               </div>
               <button
                 data-testid="product-add-to-cart"
-                onClick={ () => saveItem(product) }
+                onClick={ () => {
+                  saveItem(product);
+                  atualizaCountCart();
+                } }
               >
                 Adicionar ao Carrinho
               </button>

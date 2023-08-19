@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CartType } from '../../types/cart';
 import { EvaluationType } from '../../types/checkout';
-import { saveItem } from '../../services/cart';
+import { saveItem, readCartList } from '../../services/cart';
 import { getProductDetailsById } from '../../services/api';
 
 const VALID_EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -18,6 +18,7 @@ function ProductDetails() {
   const [form, setForm] = useState<EvaluationType>(initialState);
   const [evaluations, setEvaluations] = useState<EvaluationType[]>([]);
   const [isVerified, setIsVerified] = useState<boolean>(false);
+  const [countCart, setCountCart] = useState<number>(readCartList().length);
   const { productId }: any = useParams();
 
   useEffect(() => {
@@ -52,6 +53,10 @@ function ProductDetails() {
     }
   };
 
+  const atualizaCountCart = () => {
+    setCountCart(readCartList().length);
+  };
+
   return (
     <div>
       { product ? (
@@ -68,6 +73,7 @@ function ProductDetails() {
           >
             <button data-testid="shopping-cart-button">Carrinho</button>
           </Link>
+          <h4 data-testid="shopping-cart-size">{countCart}</h4>
           <p>{ product.description }</p>
         </>
       ) : (
@@ -75,7 +81,10 @@ function ProductDetails() {
       )}
       <button
         data-testid="product-detail-add-to-cart"
-        onClick={ () => saveItem(product) }
+        onClick={ () => {
+          saveItem(product);
+          atualizaCountCart();
+        } }
       >
         Adicionar ao Carrinho
       </button>
