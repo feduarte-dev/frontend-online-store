@@ -8,7 +8,8 @@ function Home() {
   const [inputValue, setInputValue] = useState<string>('');
   const [products, setProducts] = useState<[]>([]);
   const [isClicked, setIsClicked] = useState<boolean>(false);
-  const [countCart, setCountCart] = useState<number>(readCartList().length);
+  // const [countCart, setCountCart] = useState<number>(readCartList().length);
+  const [countCart, setCountCart] = useState<number>();
   const navigate = useNavigate();
 
   function navigateToProduct(productId: string) {
