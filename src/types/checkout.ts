@@ -6,3 +6,9 @@ export type FormType = {
   cep: string,
   endereço: string
 };
+
+export type EvaluationType = {
+  email: string,
+  rating: string,
+  text: string
+};

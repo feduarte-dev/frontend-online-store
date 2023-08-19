@@ -10,7 +10,7 @@ function Home() {
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  function handleProductNav(productId: string) {
+  function navigateToProduct(productId: string) {
     navigate(`/product/${productId}`);
   }
 
@@ -20,8 +20,8 @@ function Home() {
 
   async function handleSearchBtn() {
     setIsClicked(true);
-    const GETAPI = await getProductsFromCategoryAndQuery(inputValue, inputValue);
-    setProducts(GETAPI.results);
+    const response = await getProductsFromCategoryAndQuery(inputValue, inputValue);
+    setProducts(response.results);
   }
 
   const handleCategoryClick = useCallback((filteredData: any) => {
@@ -60,7 +60,7 @@ function Home() {
                 tabIndex={ 0 }
                 key={ product.id }
                 data-testid="product"
-                onClick={ () => handleProductNav(product.id) }
+                onClick={ () => navigateToProduct(product.id) }
                 onKeyDown={ (e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     handleCategoryClick(product.id);

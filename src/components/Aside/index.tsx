@@ -6,18 +6,18 @@ function Aside({ onCategoryClick }: AsideProps) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    const GETAPI = async () => {
+    const fetchCategories = async () => {
       const response = await getCategories();
       setCategories(response);
     };
-    GETAPI();
+    fetchCategories();
   }, []);
 
-  async function handleClick({ target }:any) {
+  async function handleCategoryClick({ target }:any) {
     const filterCategory:any = categories
       .filter(({ name }) => name === target.innerHTML)[0].id;
-    const GETAPI = await getProductById(filterCategory);
-    onCategoryClick(GETAPI.results);
+    const fetchCategories = await getProductById(filterCategory);
+    onCategoryClick(fetchCategories.results);
   }
 
   return (
@@ -26,7 +26,7 @@ function Aside({ onCategoryClick }: AsideProps) {
         <button
           data-testid="category"
           key={ category.id }
-          onClick={ (e) => handleClick(e) }
+          onClick={ (e) => handleCategoryClick(e) }
         >
           {category.name}
         </button>

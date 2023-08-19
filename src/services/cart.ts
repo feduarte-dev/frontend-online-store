@@ -3,12 +3,13 @@ import { CartType } from '../types/cart';
 if (!JSON.parse(localStorage.getItem('cartList') as string)) {
   localStorage.setItem('cartList', JSON.stringify([]));
 }
-export const readCartList = (): any[] => JSON.parse(
-  localStorage.getItem('cartList') as string,
-);
 
 const saveCartList = (cartProduct: CartType[]) => localStorage
   .setItem('cartList', JSON.stringify(cartProduct));
+
+export const readCartList = (): any[] | never[] => JSON.parse(
+  localStorage.getItem('cartList') as string,
+);
 
 export function saveItem({ id, price, thumbnail, title }: any) {
   const cartProduct = {
