@@ -5,7 +5,6 @@ import { CartType } from '../../types/cart';
 
 function Cart() {
   const [cartList, setCartList] = useState([]);
-
   const navigate = useNavigate();
 
   const getCart = () => JSON.parse(
@@ -14,25 +13,33 @@ function Cart() {
 
   useEffect(() => {
     function fetchCart() {
-      const fetchCartList = getCart();
-      setCartList(fetchCartList);
+      const cart = getCart();
+      setCartList(cart);
     }
     fetchCart();
   }, []);
 
-  const handleDeleteBtn = (product: CartType) => {
-    removeItem(product);
-    setCartList(getCart());
+  const updateCartAndState = () => {
+    const updatedCart = getCart();
+    setCartList(updatedCart);
   };
 
-  const handleIncreaseBtn = (product: CartType) => {
-    increaseItem(product);
-    setCartList(getCart());
-  };
-
-  const handleDecreaseBtn = (product: CartType) => {
-    decreaseItem(product);
-    setCartList(getCart());
+  const handleAction = (product
+  : CartType, action: 'increase' | 'decrease' | 'remove') => {
+    switch (action) {
+      case 'increase':
+        increaseItem(product);
+        break;
+      case 'decrease':
+        decreaseItem(product);
+        break;
+      case 'remove':
+        removeItem(product);
+        break;
+      default:
+        break;
+    }
+    updateCartAndState();
   };
 
   function handleCheckout() {
@@ -49,7 +56,7 @@ function Cart() {
               <p data-testid="shopping-cart-product-name">{product.title}</p>
               <button
                 data-testid="remove-product"
-                onClick={ () => handleDeleteBtn(product) }
+                onClick={ () => handleAction(product, 'remove') }
               >
                 x
               </button>
@@ -58,14 +65,14 @@ function Cart() {
               <div>
                 <button
                   data-testid="product-decrease-quantity"
-                  onClick={ () => handleDecreaseBtn(product) }
+                  onClick={ () => handleAction(product, 'decrease') }
                 >
                   -
                 </button>
                 <p data-testid="shopping-cart-product-quantity">{product.quantity}</p>
                 <button
                   data-testid="product-increase-quantity"
-                  onClick={ () => handleIncreaseBtn(product) }
+                  onClick={ () => handleAction(product, 'increase') }
                 >
                   +
                 </button>

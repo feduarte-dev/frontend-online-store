@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { readCartList } from '../../services/cart';
 import { FormType } from '../../types/checkout';
 
-const initialState = {
+const initialState: FormType = {
   name: '',
   email: '',
   cpf: '',
@@ -14,7 +14,7 @@ const initialState = {
 
 function Checkout() {
   const [form, setForm] = useState<FormType>(initialState);
-  const [verified, setIsVerified] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<boolean>(false);
   const [selectedPayment, setSelectedPayment] = useState<string>('');
   const navigate = useNavigate();
 
@@ -151,7 +151,7 @@ function Checkout() {
       >
         Finalizar Compra
       </button>
-      {verified && <p data-testid="error-msg">Campos inválidos</p>}
+      {isVerified && <p data-testid="error-msg">Campos inválidos</p>}
       {readCartList().map((product) => (
         <div key={ product.id }>
           <p>{ product.title }</p>
