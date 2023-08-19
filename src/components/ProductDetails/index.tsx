@@ -18,7 +18,14 @@ function ProductDetails() {
   const [form, setForm] = useState<EvaluationType>(initialState);
   const [evaluations, setEvaluations] = useState<EvaluationType[]>([]);
   const [isVerified, setIsVerified] = useState<boolean>(false);
+  // const [countCart, setCountCart] = useState<number>(readCartList().length);
+  const [countCart, setCountCart] = useState<number>();
   const { productId }: any = useParams();
+
+  function readCartList() {
+    const data = localStorage.getItem('cartList');
+    return data ? JSON.parse(data) : [];
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +36,11 @@ function ProductDetails() {
     };
     fetchData();
   }, [productId]);
+
+  useEffect(() => {
+    const cartList = readCartList();
+    setCountCart(cartList.length);
+  }, []);
 
   const handleForm = (event:
   React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -52,6 +64,10 @@ function ProductDetails() {
     }
   };
 
+  const atualizaCountCart = () => {
+    setCountCart(readCartList().length);
+  };
+
   return (
     <div>
       { product ? (
@@ -68,6 +84,12 @@ function ProductDetails() {
           >
             <button data-testid="shopping-cart-button">Carrinho</button>
           </Link>
+          <h4
+            data-testid="shopping-cart-size"
+          >
+            {countCart}
+
+          </h4>
           <p>{ product.description }</p>
         </>
       ) : (
@@ -75,7 +97,10 @@ function ProductDetails() {
       )}
       <button
         data-testid="product-detail-add-to-cart"
-        onClick={ () => saveItem(product) }
+        onClick={ () => {
+          saveItem(product);
+          atualizaCountCart();
+        } }
       >
         Adicionar ao Carrinho
       </button>
