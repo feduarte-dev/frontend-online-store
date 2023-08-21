@@ -51,7 +51,8 @@ function Cart() {
       {cartList.length > 0 && (
         <div>
           {cartList.map((product:{ id:string, title
-          : string, thumbnail: string, price: string, quantity: number }) => (
+          : string, thumbnail: string, price: string, quantity: number,
+          available_quantity: number }) => (
             <>
               <p data-testid="shopping-cart-product-name">{product.title}</p>
               <button
