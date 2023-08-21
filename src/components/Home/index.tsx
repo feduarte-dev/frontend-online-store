@@ -24,6 +24,7 @@ function Home() {
     setIsClicked(true);
     const response = await getProductsFromCategoryAndQuery(inputValue, inputValue);
     setProducts(response.results);
+    console.log(response.results);
   }
 
   const handleCategoryClick = useCallback((filteredData: any) => {
