@@ -7,6 +7,8 @@ import { saveItem, readCartList } from '../../services/cart';
 function Home() {
   const [inputValue, setInputValue] = useState<string>('');
   const [products, setProducts] = useState<[]>([]);
+  console.log(products);
+
   const [isClicked, setIsClicked] = useState<boolean>(false);
   // const [countCart, setCountCart] = useState<number>(readCartList().length);
   const [countCart, setCountCart] = useState<number>();
@@ -61,40 +63,46 @@ function Home() {
       {products.length > 0 && (
         <div>
           {products.map((product:
-          { id:string, title: string, thumbnail: string, price: string }) => (
-            <>
-              <div
-                role="button"
-                tabIndex={ 0 }
-                key={ product.id }
-                data-testid="product"
-                onClick={ () => navigateToProduct(product.id) }
-                onKeyDown={ (e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    handleCategoryClick(product.id);
-                  }
-                } }
-              >
-                <p>{product.title}</p>
-                <img src={ product.thumbnail } alt="productImage" />
-                <p>{product.price}</p>
-                <Link
-                  to={ `/product${product.id}` }
-                  data-testid="product-detail-link"
+          { id:string, title: string, thumbnail: string,
+            price: string, shipping: { free_shipping: boolean } }) => (
+              <>
+                <div
+                  role="button"
+                  tabIndex={ 0 }
+                  key={ product.id }
+                  data-testid="product"
+                  onClick={ () => navigateToProduct(product.id) }
+                  onKeyDown={ (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleCategoryClick(product.id);
+                    }
+                  } }
                 >
-                  Detalhes do Produto
-                </Link>
-              </div>
-              <button
-                data-testid="product-add-to-cart"
-                onClick={ () => {
-                  saveItem(product);
-                  atualizaCountCart();
-                } }
-              >
-                Adicionar ao Carrinho
-              </button>
-            </>
+                  <p>{product.title}</p>
+                  <img src={ product.thumbnail } alt="productImage" />
+                  <p>{product.price}</p>
+                  {product.shipping.free_shipping ? (
+                    <p data-testid="free-shipping">Frete Grátis</p>)
+                    : (
+                      <p />
+                    )}
+                  <Link
+                    to={ `/product${product.id}` }
+                    data-testid="product-detail-link"
+                  >
+                    Detalhes do Produto
+                  </Link>
+                </div>
+                <button
+                  data-testid="product-add-to-cart"
+                  onClick={ () => {
+                    saveItem(product);
+                    atualizaCountCart();
+                  } }
+                >
+                  Adicionar ao Carrinho
+                </button>
+              </>
           ))}
         </div>
       )}
